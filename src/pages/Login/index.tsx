@@ -105,14 +105,14 @@ const LoginPage = () => {
                 >
                   Log in
                 </Button>
-
-                <InstallPWAButton />
               </Form>
 
               <div className="text-center mt-3">
                 <Link to="" className="link-disabled">
                   Forgot password?
                 </Link>
+                <br />
+                <InstallPWAButton />
               </div>
             </Card.Body>
           </Card>

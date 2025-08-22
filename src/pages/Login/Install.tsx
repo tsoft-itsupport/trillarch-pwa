@@ -10,7 +10,6 @@ const InstallPWAButton: React.FC = () => {
     (window.navigator as any).standalone === true
 
   useEffect(() => {
-    // Hide if already installed
     if (isAlreadyInstalled()) return
 
     const handler = (e: any) => {
@@ -21,7 +20,6 @@ const InstallPWAButton: React.FC = () => {
 
     window.addEventListener('beforeinstallprompt', handler)
 
-    // Optional: also handle installed event
     window.addEventListener('appinstalled', () => {
       setIsInstallable(false)
       setDeferredPrompt(null)
@@ -49,7 +47,7 @@ const InstallPWAButton: React.FC = () => {
 
   return (
     isInstallable && (
-      <Button variant="primary" onClick={handleInstallClick}>
+      <Button variant="link" onClick={handleInstallClick}>
         Install App
       </Button>
     )
