@@ -1,0 +1,134 @@
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vh90 {
+  height: 90vh;
+}
+
+.mx-390 {
+  max-width: 390px !important;
+}
+
+::-ms-reveal {
+  display: none;
+}
+
+#main {
+  height: 100vh;
+  background-color: #f9f9fa;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+a.link-disabled {
+  pointer-events: none;
+  color: #aaa;
+}
+
+a {
+  text-decoration: none;
+}
+
+.avatar-toggle.dropdown-toggle::after {
+  display: none !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.online-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #28a745; /* Bootstrap green */
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.tsoft-bg {
+  background-color: #dfeffc;
+}
+
+.navbar {
+  height: 50px;
+}
+
+.w-120 {
+  width: 120px;
+}
+
+.w-80 {
+  width: 80px;
+}
+
+.three-state-check .form-check-input:checked {
+  background-color: #28a745; /* green */
+  border-color: #28a745;
+}
+
+.three-state-check .form-check-input {
+  background-color: #ffc107; /* green */
+  border-color: #ffc107;
+}
+
+.task-item-container {
+  height: calc(100vh - 500px);
+  overflow: auto;
+}
+
+.field-radius {
+  border-radius: calc(
+    var(--bs-border-radius) - (var(--bs-border-width))
+  ) !important;
+}
+
+.fw-light-bold {
+  font-weight: 500;
+}
+
+/* AG GRID */
+.ag-cell.centered-cell {
+  display: flex;
+  align-items: center; /* Vertical center */
+  justify-content: center; /* Horizontal center */
+  height: 100%;
+  padding: 0; /* Remove padding if needed */
+  box-sizing: border-box; /* Ensure sizing includes padding */
+}
+
+/* .ag-root-wrapper {
+  &.ag-layout-normal {
+    border-radius: 0;
+  }
+} */
+
+.ag-input-field-input {
+  border-color: #bbb;
+  height: 23px; /* Set your desired height */
+  min-height: unset;
+  font-size: 14px;
+}
+
+.cell-disabled {
+  pointer-events: none;
+}
+
+.ag-paging-panel {
+  background-color: #dfeffc;
+}
+
+.ag-picker-field-wrapper {
+  min-height: unset;
+}

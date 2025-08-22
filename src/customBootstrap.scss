@@ -1,0 +1,21 @@
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+  xxxl: 1700px // custom breakpoint
+);
+
+$navbar-brand-font-size: 1.1rem;
+$primary: #337ab7; // Custom primary color
+$secondary: #f46c3a; // Custom secondary color
+$success: #99bc5e;
+$danger: #dc3545;
+$warning: #ffc107;
+$info: #c8def5;
+$light: #bbb;
+$dark: #343a40;
+
+@import 'bootstrap/scss/bootstrap';
