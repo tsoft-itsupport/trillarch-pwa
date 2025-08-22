@@ -15,6 +15,7 @@ import trillArchLogo from '/trillarch-sq.jpg'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { axiosApi } from '../../tools/axiosApi'
+import InstallPWAButton from './Install'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('')
@@ -104,6 +105,8 @@ const LoginPage = () => {
                 >
                   Log in
                 </Button>
+
+                <InstallPWAButton />
               </Form>
 
               <div className="text-center mt-3">
