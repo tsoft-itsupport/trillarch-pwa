@@ -35,8 +35,6 @@ export async function offlineAwareRequest(method, url, data, config) {
       timestamp: Date.now(),
     });
 
-    console.log(data)
-
     if (url.startsWith('/taskitems/')) {
       const tasks = await getTasksFromIdb();
 
@@ -55,12 +53,16 @@ export async function offlineAwareRequest(method, url, data, config) {
             if (itemIndex !== taskItemIndexToUpdate) return item;
             return { ...item, status: data.status }; // update status immutably
           })
-        };
-      });
+        }
+      })
 
       await saveTasksToIdb(updatedTasks)
 
-      return Promise.resolve({ data: updatedTasks })
+      const data = {}
+
+      data.tasks = updatedTasks
+
+      return Promise.resolve({ data })
     }
 
     return Promise.resolve({ data: null, offline: true });
