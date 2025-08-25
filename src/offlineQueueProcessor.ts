@@ -7,8 +7,6 @@ export async function replayQueuedRequests() {
 
   for (const req of queued) {
     try {
-      console.log(req)
-
       await axiosApi[req.method.toLowerCase()](req.url, req.data, req.config)
 
       if (req.id !== undefined) {

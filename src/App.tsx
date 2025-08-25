@@ -63,6 +63,7 @@ function App() {
           <Route element={<AuthRoutes />}>
             <Route element={<LoginPage />} path="/login" />
             <Route element={<LoginSessionPage />} path="/loginsession" />
+            <Route element={<ChangePasswordPage />} path="/changepassword" />
           </Route>
 
           {/* PROTECTED ROUTES */}
@@ -70,7 +71,6 @@ function App() {
             <Route element={<Homepage />} path="/" />
             <Route element={<TasksPage />} path="/tasks" />
             <Route element={<TaskDetailsPage />} path="/tasks/:taskId" />
-            <Route element={<ChangePasswordPage />} path="/changepassword" />
           </Route>
         </Routes>
       </BrowserRouter>

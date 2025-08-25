@@ -35,6 +35,8 @@ export async function offlineAwareRequest(method, url, data, config) {
         config,
         timestamp: Date.now()
       })
+    } else {
+      await axiosApi[method](url, data, config);
     }
 
     const tasks = await getTasksFromIdb()

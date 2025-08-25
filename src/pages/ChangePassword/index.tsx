@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import {
   Button,
   Card,
@@ -10,12 +10,14 @@ import {
   ListGroup,
   Row
 } from 'react-bootstrap'
-import { useAccountStore, useMessageStore } from '../../store'
+import { AccountProps, useAccountStore, useMessageStore } from '../../store'
 import { handleError } from '../../tools'
 import trillArchLogo from '/trillarch-sq.jpg'
 
 import { FaCheckCircle, FaTimesCircle, FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { axiosApi } from '../../tools/axiosApi'
+import { useSearchParams } from 'react-router-dom';
 
 const requirements = [
   {
@@ -41,18 +43,32 @@ const requirements = [
 ]
 
 const ChangePasswordPage = () => {
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState('')
   const { showMessage } = useMessageStore((state) => state)
   const user = useAccountStore((state) => state?.account)
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
+  const {setAccount} = useAccountStore((state) => state)
 
   const handleChangePasswordSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault()
+      const code = searchParams.get('code')
+      const email = searchParams.get('email')
 
-      //await account.updatePassword(password)
+      const res = (await axiosApi.post('/auth/changepassword', {
+        email,
+        code,
+        password
+      })) as any
+
+      const accountRes: AccountProps = res.data.user
+      
+      const token: string = res.data.token
+
+      setAccount(accountRes, token)
 
       showMessage({ message: 'Success', title: 'Info', type: 'success' })
 
@@ -63,12 +79,6 @@ const ChangePasswordPage = () => {
       setLoading(false)
     }
   }
-
-  useEffect(() => {
-    /*if (user?.passwordUpdate && user.passwordUpdate.length > 0) {
-      navigate('/tasks')
-    }*/
-  }, [])
 
   const handleChangePasswordInput = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()

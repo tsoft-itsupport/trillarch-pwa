@@ -4,8 +4,6 @@ export const handleError = (
   err: any,
   showMessage: (props: MessageStoreProps) => void
 ) => {
-  console.log(err)
-
   if (err.response?.status === 400) {
     return showMessage({
       message: err.response?.data?.error ?? 'Server Error',

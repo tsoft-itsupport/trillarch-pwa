@@ -1,4 +1,4 @@
-import { Outlet, Navigate, useLocation } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import {
   AccountProps,
@@ -28,21 +28,11 @@ function ProtectedRoutes() {
 
   const { hideMessage, showMessage } = useMessageStore((state) => state)
   const isMessageShow = useMessageStore((state) => state.show)
-  const location = useLocation()
   const { setTasks, setLoadingTasks } = useTaskStore((state) => state)
 
   async function getCurrentUser() {
     try {
       if (isLoggedIn) return
-
-      if (location.pathname == '/changepassword') {
-        const res = (await axiosApi.get('/auth')) as any
-        const accountRes: AccountProps = res.data.user
-
-        setAccount(accountRes)
-
-        return
-      }
 
       if (isLoggedIn === undefined) {
         if (!navigator.onLine) {
