@@ -11,10 +11,13 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+      },
       manifest: {
-        name: 'My Vite React PWA',
-        short_name: 'ReactPWA',
-        description: 'A Vite + React Progressive Web App',
+        name: 'Trillarch',
+        short_name: 'Trilarch',
+        description: 'Trillarch TaskSystem',
         theme_color: '#ffffff',
         icons: [
           {
