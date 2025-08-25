@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { queueRequest } from '../offlineQueue';
-import { getTasksFromIdb, saveTasksToIdb } from '../offlineTasksIdb';
+import axios from 'axios'
+import { queueRequest } from '../offlineQueue'
+import { getTasksFromIdb, saveTasksToIdb } from '../offlineTasksIdb'
 
 export const axiosApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -26,50 +26,50 @@ axiosApi.interceptors.request.use(
 
 // Wrapper for POST requests
 export async function offlineAwareRequest(method, url, data, config) {
-  if (!navigator.onLine) {
-    await queueRequest({
-      url,
-      method: method.toUpperCase(),
-      data,
-      config,
-      timestamp: Date.now(),
-    });
-
-    if (url.startsWith('/taskitems/')) {
-      const tasks = await getTasksFromIdb();
-
-      const taskId = data.taskId;
-      const taskItemId = url.split('/taskitems/')[1];
-      const taskIndexToUpdate = tasks.findIndex(task => task.id == taskId);
-      const updatedTasks = tasks.map((task, taskIndex) => {
-        if (taskIndex !== taskIndexToUpdate) return task; // skip others
-
-        // We're in the task that needs to be updated
-        const taskItemIndexToUpdate = task.taskItems.findIndex(item => item.id == taskItemId);
-
-        return {
-          ...task,
-          taskItems: task.taskItems.map((item, itemIndex) => {
-            if (itemIndex !== taskItemIndexToUpdate) return item;
-            return { ...item, status: data.status }; // update status immutably
-          })
-        }
+  if (url.startsWith('/taskitems/')) {
+    if (!navigator.onLine) {
+      await queueRequest({
+        url,
+        method: method.toUpperCase(),
+        data,
+        config,
+        timestamp: Date.now()
       })
-
-      await saveTasksToIdb(updatedTasks)
-
-      const data = {}
-
-      data.tasks = updatedTasks
-
-      return Promise.resolve({ data })
     }
 
-    return Promise.resolve({ data: null, offline: true });
+    const tasks = await getTasksFromIdb()
+    const taskId = data.taskId
+    const taskItemId = url.split('/taskitems/')[1]
+    const taskIndexToUpdate = tasks.findIndex((task) => task.id == taskId)
+
+    const updatedTasks = tasks.map((task, taskIndex) => {
+      if (taskIndex !== taskIndexToUpdate) return task // skip others
+
+      // We're in the task that needs to be updated
+      const taskItemIndexToUpdate = task.taskItems.findIndex(
+        (item) => item.id == taskItemId
+      )
+
+      return {
+        ...task,
+        taskItems: task.taskItems.map((item, itemIndex) => {
+          if (itemIndex !== taskItemIndexToUpdate) return item
+          return { ...item, status: data.status } // update status immutably
+        })
+      }
+    })
+
+    await saveTasksToIdb(updatedTasks)
+
+    const newData = {}
+
+    newData.tasks = updatedTasks
+
+    return Promise.resolve({ data: newData })
   }
 
   // Online: make real request
-  const response = await axiosApi[method](url, data, config);
+  const response = await axiosApi[method](url, data, config)
 
-  return response;
+  return response
 }

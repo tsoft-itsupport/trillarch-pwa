@@ -44,8 +44,6 @@ function ThreeStateCheckbox(props: ThreeStateCheckboxProps) {
       }
     )
 
-    console.log(newTasks)
-
     setTasks(newTasks.data.tasks)
   }
 

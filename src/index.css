@@ -98,6 +98,16 @@ a {
   font-weight: 500;
 }
 
+.t-status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: transparent;
+  padding-right: 1.5rem; /* To allow space for a custom arrow */
+  border: 1px solid #ccc; /* Border to mimic normal style */
+  position: relative;
+}
+
 /* AG GRID */
 .ag-cell.centered-cell {
   display: flex;
