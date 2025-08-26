@@ -1,45 +1,48 @@
-import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { useEffect, useState, useRef } from 'react'
+import { Button } from 'react-bootstrap'
 
 interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
 }
 
 const App = () => {
-  const [installPromptEvent, setInstallPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstallable, setIsInstallable] = useState(false);
+  const [isInstallable, setIsInstallable] = useState(false)
+  const installPromptEvent = useRef<BeforeInstallPromptEvent | null>(null)
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      const promptEvent = e as BeforeInstallPromptEvent;
-      e.preventDefault();
-      setInstallPromptEvent(promptEvent);
-      setIsInstallable(true);
-    };
+      const promptEvent = e as BeforeInstallPromptEvent
+      e.preventDefault()
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      installPromptEvent.current = promptEvent
+      setIsInstallable(true)
+    }
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
+      window.removeEventListener(
+        'beforeinstallprompt',
+        handleBeforeInstallPrompt
+      )
+    }
+  }, [])
 
   const handleInstallClick = async () => {
-    if (installPromptEvent) {
-      await installPromptEvent.prompt();
+    const promptEvent = installPromptEvent.current
+    if (!promptEvent) return
 
-      const choiceResult = await installPromptEvent.userChoice;
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
+    await promptEvent.prompt()
 
-      setInstallPromptEvent(null); // Clear the prompt after use
-      setIsInstallable(false);
+    const choiceResult = await promptEvent.userChoice
+    console.log(`User response: ${choiceResult.outcome}`)
+
+    if (choiceResult.outcome === 'accepted') {
+      installPromptEvent.current = null
+      setIsInstallable(false) // Hide button if accepted
     }
-  };
+  }
 
   return (
     <div>
@@ -49,7 +52,7 @@ const App = () => {
         </Button>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

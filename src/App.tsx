@@ -11,15 +11,20 @@ import Homepage from './pages/Home'
 import TaskDetailsPage from './pages/TaskDetails'
 import { useEffect, useState } from 'react'
 import { replayQueuedRequests } from './offlineQueueProcessor'
+import { getQueuedRequests } from './offlineQueue'
 
 function App() {
   const [loading, setLoading] = useState(false)
 
   const handleOnline = async () => {
     try {
-      setLoading(true)
+      const queued = await getQueuedRequests()
 
-      await replayQueuedRequests()
+      if (queued.length > 0) {
+        setLoading(true)
+      }
+
+      await replayQueuedRequests(queued)
     } catch (err) {
       console.log('Something went wrong with offline queud request')
     } finally {

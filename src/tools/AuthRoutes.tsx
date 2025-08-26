@@ -15,6 +15,7 @@ function AuthRoutes() {
   const isMessageShow = useMessageStore((state) => state.show)
 
   async function getCurrentUser() {
+    console.log('here')
     try {
       if (isLoggedIn === false) return
 

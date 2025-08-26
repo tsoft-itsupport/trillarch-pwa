@@ -1,10 +1,8 @@
 //@ts-ignore
 import { axiosApi } from './tools/axiosApi'
-import { getQueuedRequests, deleteRequest } from './offlineQueue'
+import { deleteRequest } from './offlineQueue'
 
-export async function replayQueuedRequests() {
-  const queued = await getQueuedRequests()
-
+export async function replayQueuedRequests(queued: any) {
   for (const req of queued) {
     try {
       await axiosApi[req.method.toLowerCase()](req.url, req.data, req.config)
