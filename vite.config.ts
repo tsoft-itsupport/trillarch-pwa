@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate', // ✅ auto registration & activation
       injectRegister: 'auto',
       includeAssets: [
         'favicon.svg',

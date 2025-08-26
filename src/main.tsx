@@ -5,21 +5,15 @@ import App from './App.tsx'
 import './index.css'
 import './customBootstrap.scss'
 
-const updateSW: any = registerSW({
-  onNeedRefresh() {
-    console.log('New version available — applying update')
-    if (typeof updateSW === 'function') {
-      updateSW(true)
-    }
-  },
+registerSW({
   onOfflineReady() {
-    console.log('App is ready for offline use')
+    console.log('✅ App is ready for offline use')
   },
   onRegistered(swReg) {
-    console.log('Service Worker registered:', swReg)
+    console.log('✅ Service Worker registered:', swReg)
   },
   onRegisterError(err) {
-    console.error('Service Worker registration error:', err)
+    console.error('❌ Service Worker registration error:', err)
   }
 })
 
