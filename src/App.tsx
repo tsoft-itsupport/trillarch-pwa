@@ -32,6 +32,31 @@ function App() {
     }
   }
 
+    useEffect(() => {
+      async function checkAndReset() {
+        try {
+            if (!navigator.onLine) {
+              console.log('Offline, skipping cache reset')
+              return
+            }
+          const cacheNames = await caches.keys()
+
+          if (cacheNames.length === 0) {
+            console.log('Cache empty: unregistering service workers and reloading...')
+            const registrations = await navigator.serviceWorker.getRegistrations()
+            await Promise.all(registrations.map(reg => reg.unregister()))
+            window.location.reload()
+          } else {
+            console.log('Cache found, no action needed')
+          }
+        } catch (error) {
+          console.error('Error checking cache or unregistering SW:', error)
+        }
+      }
+
+      checkAndReset()
+    }, [])
+
   useEffect(() => {
     window.addEventListener('online', handleOnline)
 
