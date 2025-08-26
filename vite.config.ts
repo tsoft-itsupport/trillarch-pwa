@@ -9,9 +9,15 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate', // ✅ auto registration & activation
+      registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      includeAssets: [
+        'favicon.ico',
+        'apple-touch-icon.png',
+        'icon-192x192.png',
+        'icon-512x512.png',
+        'maskable-512x512.png'
+      ],
       workbox: {
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
         cleanupOutdatedCaches: true
@@ -23,17 +29,17 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'trillarch-sq.jpg',
+            src: 'icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'trillarch-sq.jpg',
+            src: 'icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           },
           {
-            src: 'trillarch-sq.jpg',
+            src: 'maskable-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'
