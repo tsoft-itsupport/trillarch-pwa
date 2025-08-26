@@ -1,58 +1,57 @@
-import { useEffect, useState, useRef } from 'react'
-import { Button } from 'react-bootstrap'
+import { useState, useEffect, ReactNode } from 'react';
+import { Button } from 'react-bootstrap';
 
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
+interface ICustomPwaWindow extends Window {
+  pwaDeferredPrompt?: {
+    readonly userChoice: Promise<{
+      outcome: 'accepted' | 'dismissed';
+      platform: string;
+    }>;
+    prompt: () => Promise<void>;
+  };
 }
 
-const App = () => {
-  const [isInstallable, setIsInstallable] = useState(false)
-  const installPromptEvent = useRef<BeforeInstallPromptEvent | null>(null)
+declare let window: ICustomPwaWindow;
+
+const InstallPWAButton = (): ReactNode => {
+  const [isShowButton, setIsShowButton] = useState(false);
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      const promptEvent = e as BeforeInstallPromptEvent
-      e.preventDefault()
+    // Check initially
+    setIsShowButton(!!window.pwaDeferredPrompt);
 
-      installPromptEvent.current = promptEvent
-      setIsInstallable(true)
-    }
+    // Listen for custom event dispatched when prompt is available
+    const onPromptAvailable = () => {
+      setIsShowButton(true);
+    };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+    window.addEventListener('pwa:available', onPromptAvailable);
 
+    // Cleanup
     return () => {
-      window.removeEventListener(
-        'beforeinstallprompt',
-        handleBeforeInstallPrompt
-      )
+      window.removeEventListener('pwa:available', onPromptAvailable);
+    };
+  }, []);
+
+  const handleClick = async (): Promise<void> => {
+    if (window.pwaDeferredPrompt) {
+      await window.pwaDeferredPrompt.prompt();
+      const { outcome } = await window.pwaDeferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setIsShowButton(false);
+      }
     }
-  }, [])
+  };
 
-  const handleInstallClick = async () => {
-    const promptEvent = installPromptEvent.current
-    if (!promptEvent) return
-
-    await promptEvent.prompt()
-
-    const choiceResult = await promptEvent.userChoice
-    console.log(`User response: ${choiceResult.outcome}`)
-
-    if (choiceResult.outcome === 'accepted') {
-      installPromptEvent.current = null
-      setIsInstallable(false) // Hide button if accepted
-    }
+  if (!isShowButton) {
+    return null;
   }
 
   return (
-    <div>
-      {isInstallable && (
-        <Button variant="link" onClick={handleInstallClick}>
-          Install App
-        </Button>
-      )}
-    </div>
-  )
-}
+    <Button variant="link" onClick={handleClick} title="Install">
+      Install
+    </Button>
+  );
+};
 
-export default App
+export default InstallPWAButton;
