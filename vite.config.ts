@@ -4,15 +4,22 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   build: {
-    outDir: 'build',
+    outDir: 'build'
   },
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      registerType: 'prompt',
+      injectRegister: 'auto',
+      includeAssets: [
+        'favicon.svg',
+        'favicon.ico',
+        'robots.txt',
+        'apple-touch-icon.png'
+      ],
       workbox: {
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
+        cleanupOutdatedCaches: true
       },
       manifest: {
         name: 'Trillarch',

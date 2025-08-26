@@ -10,7 +10,7 @@ import {
   Row
 } from 'react-bootstrap'
 import { AccountProps, useAccountStore, useMessageStore } from '../../store'
-import { handleError } from '../../tools'
+import { handleError, resetCache } from '../../tools'
 import trillArchLogo from '/trillarch-sq.jpg'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
@@ -113,6 +113,11 @@ const LoginPage = () => {
                 </Link>
                 <br />
                 <InstallPWAButton />
+                <br />
+
+                <Button size="sm" variant="link" onClick={() => resetCache()}>
+                  Clear Cache
+                </Button>
               </div>
             </Card.Body>
           </Card>

@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { replayQueuedRequests } from './offlineQueueProcessor'
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const handleOnline = async () => {
     try {

@@ -2,7 +2,7 @@ import { Badge, Dropdown, Image, Navbar } from 'react-bootstrap'
 import trillArchLogo from '/trillarch-sq.jpg'
 import { useAccountStore, useMessageStore } from '../store'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { handleError } from '../tools'
+import { handleError, resetCache } from '../tools'
 import AvatarName from './AvatarName'
 import { FiArrowLeft } from 'react-icons/fi'
 import { FaBell } from 'react-icons/fa'
@@ -102,6 +102,10 @@ const Appbar = (props: AppbarProps) => {
                 <Dropdown.Item>Settings 1</Dropdown.Item>
                 <Dropdown.Item>Settings 2</Dropdown.Item>
                 <Dropdown.Item>Settings 3</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={() => resetCache()}>
+                  Clear Cache
+                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={handleLogout}>Log out</Dropdown.Item>
               </Dropdown.Menu>
