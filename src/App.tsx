@@ -36,29 +36,37 @@ function App() {
     async function checkAndReset() {
       try {
         if (!navigator.onLine) {
-          console.log('Offline, skipping cache reset')
-          return
+          console.log('Offline, skipping cache reset');
+          return;
         }
 
-        const cacheNames = await caches.keys()
+        const cacheNames = await caches.keys();
+        const isFirstVisit = !localStorage.getItem('hasVisited');
 
-        if (cacheNames.length === 0) {
-          console.log(
-            'Cache empty: unregistering service workers and reloading...'
-          )
-          const registrations = await navigator.serviceWorker.getRegistrations()
-          await Promise.all(registrations.map((reg) => reg.unregister()))
-          window.location.reload()
+        if (cacheNames.length === 0 && !isFirstVisit) {
+          console.log('Cache empty: asking user to reload');
+
+          const reload = window.confirm(
+            'App cache was cleared. Reload to restore offline functionality?'
+          );
+
+          if (reload) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map((reg) => reg.unregister()));
+            window.location.reload();
+          }
         } else {
-          console.log('Cache found, no action needed')
+          // Mark the user as having visited
+          localStorage.setItem('hasVisited', 'true');
+          console.log('Cache found or first visit, no action needed');
         }
       } catch (error) {
-        console.error('Error checking cache or unregistering SW:', error)
+        console.error('Error checking cache or unregistering SW:', error);
       }
     }
 
-    checkAndReset()
-  }, [])
+    checkAndReset();
+  }, []);
 
   useEffect(() => {
     window.addEventListener('online', handleOnline)
